@@ -1,51 +1,64 @@
-window.addEventListener("DOMContentLoaded", () => {
-  axios
-    .get("http://localhost:3000/")
-    .then((candies) => {
+window.addEventListener("DOMContentLoaded", async () => {
+  try {
+    const loadingCandy = document.createElement("h4");
+    loadingCandy.innerHTML =
+      "<h4 class='text-center mt-5'> Loding candings...</h4>";
+
+    setTimeout(async () => {
+      document.getElementById("candyList").removeChild(loadingCandy);
+
+      const candies = await axios.get("http://localhost:3000/");
       candies.data.forEach((candy) => {
         showAllCandyOnScreen(candy);
       });
-    })
-    .catch((err) => console.log(err.message));
+    }, 800);
+
+    document.getElementById("candyList").appendChild(loadingCandy);
+  } catch (err) {
+    console.log(err.message);
+  }
 });
 
 const form = document.getElementById("form-submit");
 
-form.addEventListener("submit", (e) => {
-  e.preventDefault();
+form.addEventListener("submit", async (e) => {
+  try {
+    e.preventDefault();
 
-  const nameInput = document.getElementById("candyName");
-  const descriptionInput = document.getElementById("description");
-  const priceInput = document.getElementById("price");
-  const qtyInput = document.getElementById("quantity");
+    const nameInput = document.getElementById("candyName");
+    const descriptionInput = document.getElementById("description");
+    const priceInput = document.getElementById("price");
+    const qtyInput = document.getElementById("quantity");
 
-  if (
-    !nameInput.value ||
-    !descriptionInput.value ||
-    !priceInput.value ||
-    !qtyInput.value
-  ) {
-    alert("all fields are required");
-  } else {
-    const candyObj = {
-      candyName: nameInput.value,
-      candyDescription: descriptionInput.value,
-      candyPrice: priceInput.value,
-      candyQty: qtyInput.value,
-    };
-    // console.log(candyObj);
-    axios
-      .post(`http://localhost:3000/add-candy`, candyObj)
-      .then((candy) => {
-        console.log(candy.data);
-        showAllCandyOnScreen(candy.data);
-      })
-      .catch((err) => console.log(err));
+    if (
+      !nameInput.value ||
+      !descriptionInput.value ||
+      !priceInput.value ||
+      !qtyInput.value
+    ) {
+      alert("all fields are required");
+    } else {
+      const candyObj = {
+        candyName: nameInput.value,
+        candyDescription: descriptionInput.value,
+        candyPrice: priceInput.value,
+        candyQty: qtyInput.value,
+      };
+      // console.log(candyObj);
+      const candy = await axios.post(
+        `http://localhost:3000/add-candy`,
+        candyObj
+      );
+      // console.log(candy.data);
+      showAllCandyOnScreen(candy.data);
 
-    nameInput.value = "";
-    descriptionInput.value = "";
-    priceInput.value = "";
-    qtyInput.value = "";
+      nameInput.value = "";
+      descriptionInput.value = "";
+      priceInput.value = "";
+      qtyInput.value = "";
+    }
+  } catch (err) {
+    console.log(err.message);
   }
 });
 
@@ -75,50 +88,59 @@ function showAllCandyOnScreen(candyObj) {
   candyList.appendChild(candyItem);
 
   buyOneBtn.addEventListener("click", buyOneCandy);
-  function buyOneCandy() {
-    if (candyObj.candyQty > 0) {
-      console.log("buying 1");
-      axios
-        .put(`http://localhost:3000/buy-one/${candyObj.id}`, candyObj)
-        .then((candy) => {
-          console.log(candy.data);
+  async function buyOneCandy() {
+    try {
+      if (candyObj.candyQty > 0) {
+        console.log("buying 1");
+        const candy = await axios.put(
+          `http://localhost:3000/buy-one/${candyObj.id}`,
+          candyObj
+        );
+        // console.log(candy.data);
 
-          candyObj = candy.data;
-          candyItem.firstElementChild.innerHTML = `${candyObj.candyName} - ${candyObj.candyDescription} - ${candyObj.candyPrice}Rs - ${candyObj.candyQty}`;
-        })
-        .catch((err) => console.log(err.message));
-    } else alert("Sold Out!");
+        candyObj = candy.data;
+        candyItem.firstElementChild.innerHTML = `${candyObj.candyName} - ${candyObj.candyDescription} - ${candyObj.candyPrice}Rs - ${candyObj.candyQty}`;
+      } else alert("Sold Out!");
+    } catch (error) {
+      console.log(error.message);
+    }
   }
 
   buyTwoBtn.addEventListener("click", buyTwoCandy);
-  function buyTwoCandy() {
-    if (candyObj.candyQty > 0) {
-      console.log("buying 2");
-      axios
-        .put(`http://localhost:3000/buy-two/${candyObj.id}`, candyObj)
-        .then((candy) => {
-          console.log(candy.data);
+  async function buyTwoCandy() {
+    try {
+      if (candyObj.candyQty > 0) {
+        console.log("buying 2");
+        const candy = await axios.put(
+          `http://localhost:3000/buy-two/${candyObj.id}`,
+          candyObj
+        );
+        // console.log(candy.data);
 
-          candyObj = candy.data;
-          candyItem.firstElementChild.innerHTML = `${candyObj.candyName} - ${candyObj.candyDescription} - ${candyObj.candyPrice}Rs - ${candyObj.candyQty}`;
-        })
-        .catch((err) => console.log(err.message));
-    } else alert("Sold Out!");
+        candyObj = candy.data;
+        candyItem.firstElementChild.innerHTML = `${candyObj.candyName} - ${candyObj.candyDescription} - ${candyObj.candyPrice}Rs - ${candyObj.candyQty}`;
+      } else alert("Sold Out!");
+    } catch (error) {
+      console.log(error.message);
+    }
   }
 
   buyThreeBtn.addEventListener("click", buyThreeCandy);
-  function buyThreeCandy() {
-    if (candyObj.candyQty > 0) {
-      console.log("buying 3");
-      axios
-        .put(`http://localhost:3000/buy-three/${candyObj.id}`, candyObj)
-        .then((candy) => {
-          console.log(candy.data);
+  async function buyThreeCandy() {
+    try {
+      if (candyObj.candyQty > 0) {
+        console.log("buying 3");
+        const candy = await axios.put(
+          `http://localhost:3000/buy-three/${candyObj.id}`,
+          candyObj
+        );
+        // console.log(candy.data);
 
-          candyObj = candy.data;
-          candyItem.firstElementChild.innerHTML = `${candyObj.candyName} - ${candyObj.candyDescription} - ${candyObj.candyPrice}Rs - ${candyObj.candyQty}`;
-        })
-        .catch((err) => console.log(err.message));
-    } else alert("Sold Out!");
+        candyObj = candy.data;
+        candyItem.firstElementChild.innerHTML = `${candyObj.candyName} - ${candyObj.candyDescription} - ${candyObj.candyPrice}Rs - ${candyObj.candyQty}`;
+      } else alert("Sold Out!");
+    } catch (error) {
+      console.log(error.message);
+    }
   }
 }
