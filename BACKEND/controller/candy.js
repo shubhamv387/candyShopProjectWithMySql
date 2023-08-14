@@ -27,17 +27,18 @@ exports.postCandy = (req, res, next) => {
 
 exports.buyOne = (req, res, next) => {
   const candyId = req.params.id;
+  // console.log(req.body);
   // console.log(candyId);
   Candy.findAll({ where: { id: candyId } })
     .then((candy) => {
-      candy
+      candy[0]
         .update(
           {
             id: candyId,
-            candyName: candy[0].candyName,
-            candyDescription: candy[0].candyDescription,
-            candyPrice: candy[0].candyPrice,
-            candyQty: candy[0].candyQty - 1,
+            candyName: req.body.candyName,
+            candyDescription: req.body.candyDescription,
+            candyPrice: req.body.candyPrice,
+            candyQty: req.body.candyQty - 1,
           },
           { where: { id: candyId } }
         )
@@ -51,17 +52,18 @@ exports.buyOne = (req, res, next) => {
 
 exports.buyTwo = (req, res, next) => {
   const candyId = req.params.id;
+  // console.log(req.body);
   // console.log(candyId);
   Candy.findAll({ where: { id: candyId } })
     .then((candy) => {
-      candy
+      candy[0]
         .update(
           {
             id: candyId,
-            candyName: candy[0].candyName,
-            candyDescription: candy[0].candyDescription,
-            candyPrice: candy[0].candyPrice,
-            candyQty: candy[0].candyQty - 2,
+            candyName: req.body.candyName,
+            candyDescription: req.body.candyDescription,
+            candyPrice: req.body.candyPrice,
+            candyQty: req.body.candyQty - 2,
           },
           { where: { id: candyId } }
         )
@@ -75,17 +77,18 @@ exports.buyTwo = (req, res, next) => {
 
 exports.buyThree = (req, res, next) => {
   const candyId = req.params.id;
+  // console.log(req.body);
   // console.log(candyId);
   Candy.findAll({ where: { id: candyId } })
     .then((candy) => {
-      candy
+      candy[0]
         .update(
           {
             id: candyId,
-            candyName: candy[0].candyName,
-            candyDescription: candy[0].candyDescription,
-            candyPrice: candy[0].candyPrice,
-            candyQty: candy[0].candyQty - 3,
+            candyName: req.body.candyName,
+            candyDescription: req.body.candyDescription,
+            candyPrice: req.body.candyPrice,
+            candyQty: req.body.candyQty - 3,
           },
           { where: { id: candyId } }
         )

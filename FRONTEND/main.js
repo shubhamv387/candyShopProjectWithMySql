@@ -78,11 +78,11 @@ function showAllCandyOnScreen(candyObj) {
   function buyOneCandy() {
     console.log("buying 1");
     axios
-      .put(`http://localhost:3000/buy-one/${candyObj.id}`, {
-        messgae: "buying 1",
-      })
+      .put(`http://localhost:3000/buy-one/${candyObj.id}`, candyObj)
       .then((candy) => {
-        console.log(candy);
+        console.log(candy.data);
+        showAllCandyOnScreen(candy.data);
+        candyList.removeChild(candyItem);
       })
       .catch((err) => console.log(err.message));
   }
@@ -91,11 +91,11 @@ function showAllCandyOnScreen(candyObj) {
   function buyTwoCandy() {
     console.log("buying 2");
     axios
-      .put(`http://localhost:3000/buy-two/${candyObj.id}`, {
-        messgae: "buying 1",
-      })
+      .put(`http://localhost:3000/buy-two/${candyObj.id}`, candyObj)
       .then((candy) => {
-        console.log(candy);
+        console.log(candy.data);
+        showAllCandyOnScreen(candy.data);
+        candyList.removeChild(candyItem);
       })
       .catch((err) => console.log(err.message));
   }
@@ -104,11 +104,11 @@ function showAllCandyOnScreen(candyObj) {
   function buyThreeCandy() {
     console.log("buying 3");
     axios
-      .put(`http://localhost:3000/buy-three/${candyObj.id}`, {
-        messgae: "buying 1",
-      })
+      .put(`http://localhost:3000/buy-three/${candyObj.id}`, candyObj)
       .then((candy) => {
-        console.log(candy);
+        console.log(candy.data);
+        showAllCandyOnScreen(candy.data);
+        candyList.removeChild(candyItem);
       })
       .catch((err) => console.log(err.message));
   }
