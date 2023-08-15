@@ -1,101 +1,63 @@
 const Candy = require("../model/candy");
 
-exports.getAllCandy = (req, res, next) => {
-  Candy.findAll()
-    .then((candies) => {
-      res.json(candies);
-    })
-    .catch((err) => console.log(err));
+exports.getAllCandy = async (req, res, next) => {
+  try {
+    const candies = await Candy.findAll();
+    return res.json(candies);
+  } catch (error) {
+    console.log(error);
+  }
 };
 
-exports.postCandy = (req, res, next) => {
+exports.postCandy = async (req, res, next) => {
   const candyName = req.body.candyName;
   const candyDescription = req.body.candyDescription;
   const candyPrice = req.body.candyPrice;
   const candyQty = req.body.candyQty;
-  Candy.create({
-    candyName: candyName,
-    candyDescription: candyDescription,
-    candyPrice: candyPrice,
-    candyQty: candyQty,
-  })
-    .then((candy) => {
-      res.json(candy);
-    })
-    .catch((err) => console.log(err.message));
+
+  try {
+    const candy = await Candy.create({
+      candyName: candyName,
+      candyDescription: candyDescription,
+      candyPrice: candyPrice,
+      candyQty: candyQty,
+    });
+    return res.json(candy);
+  } catch (error) {
+    console.log(error);
+  }
 };
 
-exports.buyOne = (req, res, next) => {
+exports.buying = async (req, res, next) => {
   const candyId = req.params.id;
-  // console.log(req.body);
-  // console.log(candyId);
-  Candy.findAll({ where: { id: candyId } })
-    .then((candy) => {
-      candy[0]
-        .update(
-          {
-            id: candyId,
-            candyName: req.body.candyName,
-            candyDescription: req.body.candyDescription,
-            candyPrice: req.body.candyPrice,
-            candyQty: req.body.candyQty - 1,
-          },
-          { where: { id: candyId } }
-        )
-        .then((candy) => {
-          res.json(candy);
-        })
-        .catch((err) => console.log(err.message));
-    })
-    .catch((err) => console.log(err.message));
-};
+  let candyQty;
 
-exports.buyTwo = (req, res, next) => {
-  const candyId = req.params.id;
-  // console.log(req.body);
+  if (req.body.buying === "one") candyQty = req.body.candyObj.candyQty - 1;
+  else if (req.body.buying === "two") candyQty = req.body.candyObj.candyQty - 2;
+  else if (req.body.buying === "three")
+    candyQty = req.body.candyObj.candyQty - 3;
   // console.log(candyId);
-  Candy.findAll({ where: { id: candyId } })
-    .then((candy) => {
-      candy[0]
-        .update(
-          {
-            id: candyId,
-            candyName: req.body.candyName,
-            candyDescription: req.body.candyDescription,
-            candyPrice: req.body.candyPrice,
-            candyQty: req.body.candyQty - 2,
-          },
-          { where: { id: candyId } }
-        )
-        .then((candy) => {
-          res.json(candy);
-        })
-        .catch((err) => console.log(err.message));
-    })
-    .catch((err) => console.log(err.message));
-};
+  let candy;
 
-exports.buyThree = (req, res, next) => {
-  const candyId = req.params.id;
-  // console.log(req.body);
-  // console.log(candyId);
-  Candy.findAll({ where: { id: candyId } })
-    .then((candy) => {
-      candy[0]
-        .update(
-          {
-            id: candyId,
-            candyName: req.body.candyName,
-            candyDescription: req.body.candyDescription,
-            candyPrice: req.body.candyPrice,
-            candyQty: req.body.candyQty - 3,
-          },
-          { where: { id: candyId } }
-        )
-        .then((candy) => {
-          res.json(candy);
-        })
-        .catch((err) => console.log(err.message));
-    })
-    .catch((err) => console.log(err.message));
+  try {
+    candy = await Candy.findAll({ where: { id: candyId } });
+  } catch (error) {
+    console.log(error);
+  }
+
+  try {
+    candy = await candy[0].update(
+      {
+        id: candyId,
+        candyName: req.body.candyObj.candyName,
+        candyDescription: req.body.candyObj.candyDescription,
+        candyPrice: req.body.candyObj.candyPrice,
+        candyQty: candyQty,
+      },
+      { where: { id: candyId } }
+    );
+    return res.json(candy);
+  } catch (error) {
+    console.log(error);
+  }
 };

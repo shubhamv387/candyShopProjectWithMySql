@@ -8,10 +8,10 @@ router.get("/", candyController.getAllCandy);
 
 router.post("/add-candy", candyController.postCandy);
 
-router.put("/buy-one/:id", candyController.buyOne);
+router.put("/buying/:id", candyController.buying);
 
-router.put("/buy-two/:id", candyController.buyTwo);
+// router.put("/buy-two/:id", candyController.buyTwo);
 
-router.put("/buy-three/:id", candyController.buyThree);
+// router.put("/buy-three/:id", candyController.buyThree);
 
 module.exports = router;
